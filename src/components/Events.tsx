@@ -1,13 +1,6 @@
 import { motion } from "framer-motion";
 import { upcomingEvents, pastEvents, type Event } from "../data/events";
 
-const TAG_LABELS: Record<Event["tag"], string> = {
-  beginner: "Beginner",
-  intermediate: "Intermediate",
-  open: "Open",
-  esports: "Esports",
-};
-
 function EventCard({ event, index }: { event: Event; index: number }) {
   const seatsLeft = event.seatsTotal - event.seatsTaken;
   const seatsPercent = (event.seatsTaken / event.seatsTotal) * 100;

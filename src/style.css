@@ -3,17 +3,6 @@
 
 @import 'tailwindcss';
 
-/* Primary gamified font: if you add a local Knight Warrior font file to /public/fonts/,
-   it will be used. Otherwise we fall back to the Google 'Press Start 2P' retro font. */
-@font-face {
-  font-family: 'Knight Warrior';
-  src: url('/fonts/KnightWarrior.woff2') format('woff2'),
-       url('/fonts/KnightWarrior.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';
