@@ -11,12 +11,14 @@ import { ParticleBackground } from "./components/ParticleBackground";
 import LoadingScreen from "./components/LoadingScreen";
 import { CustomCursor } from "./components/CustomCursor";
 import { AchievementPopup } from "./components/AchievementPopup";
+import { QuestsModal } from "./components/QuestsModal";
 import { useSessionProgress } from "./hooks/useSessionProgress";
 import { useSectionAchievement } from "./hooks/useSectionAchievement";
 
 function App() {
   const [loaded, setLoaded] = useState(false);
-  const { level, levelProgress, latestAchievement, unlockAchievement } =
+  const [isQuestsModalOpen, setIsQuestsModalOpen] = useState(false);
+  const { level, levelProgress, latestAchievement, unlockAchievement, points, quests, completeQuest } =
     useSessionProgress();
 
   // Fire achievements when sections come into view
@@ -43,7 +45,7 @@ function App() {
           <main id="main-content">
             <Hero />
             <Domains />
-            <Events />
+            <Events onRegister={() => completeQuest("first_registration")} />
             <Team />
             <Contact />
           </main>
@@ -58,6 +60,15 @@ function App() {
             level={level}
             levelProgress={levelProgress}
             latestAchievement={latestAchievement}
+            points={points}
+            onOpenQuests={() => setIsQuestsModalOpen(true)}
+          />
+
+          {/* Quests Modal */}
+          <QuestsModal 
+            isOpen={isQuestsModalOpen} 
+            onClose={() => setIsQuestsModalOpen(false)} 
+            quests={quests} 
           />
         </>
       )}

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { upcomingEvents, pastEvents, type Event } from "../data/events";
 
-function EventCard({ event, index }: { event: Event; index: number }) {
+function EventCard({ event, index, onRegister }: { event: Event; index: number; onRegister?: () => void }) {
   const seatsLeft = event.seatsTotal - event.seatsTaken;
   const seatsPercent = (event.seatsTaken / event.seatsTotal) * 100;
   const isLow = seatsPercent > 85;
@@ -78,6 +78,9 @@ function EventCard({ event, index }: { event: Event; index: number }) {
           href={event.formUrl}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => {
+            if (onRegister) onRegister();
+          }}
           className="btn btn-primary"
           style={{ fontSize: "0.875rem", padding: "8px 16px" }}
           aria-label={`Register for ${event.title}`}
@@ -89,7 +92,11 @@ function EventCard({ event, index }: { event: Event; index: number }) {
   );
 }
 
-export function Events() {
+interface EventsProps {
+  onRegister?: () => void;
+}
+
+export function Events({ onRegister }: EventsProps) {
   const events = upcomingEvents;
 
   return (
@@ -125,7 +132,7 @@ export function Events() {
           }}
         >
           {events.map((event, i) => (
-            <EventCard key={event.id} event={event} index={i} />
+            <EventCard key={event.id} event={event} index={i} onRegister={onRegister} />
           ))}
         </div>
 

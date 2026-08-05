@@ -4,9 +4,11 @@ interface StatusBarProps {
   level: number;
   levelProgress: number;
   latestAchievement: { id: string; label: string } | null;
+  points?: number;
+  onOpenQuests?: () => void;
 }
 
-export function StatusBar({ level, levelProgress }: StatusBarProps) {
+export function StatusBar({ level, levelProgress, points, onOpenQuests }: StatusBarProps) {
   return (
     <div className="status-bar-wrapper" role="status" aria-live="polite" aria-label="Session progress">
       <div
@@ -90,17 +92,57 @@ export function StatusBar({ level, levelProgress }: StatusBarProps) {
           </span>
         </div>
 
-        {/* Right: scroll percentage */}
+        {/* Right: gamification & scroll */}
         <div
           style={{
             paddingInline: "20px",
             height: "100%",
             display: "flex",
             alignItems: "center",
-            gap: "10px",
+            gap: "16px",
             borderLeft: "1px solid var(--border)",
           }}
         >
+          {points !== undefined && (
+            <span style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.875rem",
+              color: "var(--accent)",
+              fontWeight: 600,
+            }}>
+              {points} XP
+            </span>
+          )}
+          
+          {onOpenQuests && (
+            <button
+              onClick={onOpenQuests}
+              style={{
+                background: "rgba(6, 182, 212, 0.1)",
+                border: "1px solid var(--accent)",
+                color: "var(--accent)",
+                padding: "4px 12px",
+                borderRadius: "4px",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.75rem",
+                cursor: "pointer",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                transition: "all 0.2s"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(6, 182, 212, 0.2)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(6, 182, 212, 0.1)";
+              }}
+            >
+              Quests
+            </button>
+          )}
+
+          <div style={{ width: "1px", height: "16px", background: "var(--border)" }} />
+
           <AnimatePresence mode="wait">
             <motion.span
               key={Math.round(levelProgress)}
