@@ -32,9 +32,9 @@ export function QuestsModal({ isOpen, onClose, quests }: QuestsModalProps) {
 
           {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95, x: "-50%", y: "-50%" }}
-            animate={{ opacity: 1, y: "-50%", scale: 1, x: "-50%" }}
-            exit={{ opacity: 0, y: 20, scale: 0.95, x: "-50%", y: "-50%" }}
+            initial={{ opacity: 0, scale: 0.95, x: "-50%", y: "-40%" }}
+            animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+            exit={{ opacity: 0, scale: 0.95, x: "-50%", y: "-40%" }}
             style={{
               position: "fixed",
               top: "50%",
