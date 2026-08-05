@@ -1,155 +1,83 @@
-import { useRef, type MouseEvent } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion } from "framer-motion";
 
-const domains = [
+const DOMAINS = [
   {
-    id: 1,
-    title: 'Game Development',
-    icon: '🎮',
-    tools: ['Unity', 'Unreal', 'Godot']
+    id: "dev",
+    title: "Game Dev",
+    icon: "💻",
+    description: "Build immersive worlds using industry-standard engines and frameworks.",
+    tools: ["Unity", "Unreal", "Godot"]
   },
   {
-    id: 2,
-    title: 'Programming',
-    icon: '💻',
-    tools: ['C#', 'C++', 'Java', 'Python']
+    id: "design",
+    title: "Game Design",
+    icon: "🎨",
+    description: "Craft compelling mechanics, levels, and narratives that keep players engaged.",
+    tools: ["Blender", "Figma", "Aseprite"]
   },
   {
-    id: 3,
-    title: 'Game Design',
-    icon: '🎯',
-    tools: ['Storytelling', 'Mechanics', 'Level Design']
-  },
-  {
-    id: 4,
-    title: 'Art & Animation',
-    icon: '🎨',
-    tools: ['Blender', 'Pixel Art', '3D Modeling']
-  },
-  {
-    id: 5,
-    title: 'Esports',
-    icon: '🏆',
-    tools: ['Valorant', 'CS2', 'BGMI', 'Rocket League']
-  },
-  {
-    id: 6,
-    title: 'Content Creation',
-    icon: '📹',
-    tools: ['Streaming', 'Video Editing', 'Social Media']
+    id: "esports",
+    title: "Esports",
+    icon: "🎮",
+    description: "Compete in inter-college tournaments and build professional gaming skills.",
+    tools: ["Valorant", "CS2", "Rocket League"]
   }
 ];
 
-const DomainCard = ({ domain, index }: { domain: typeof domains[0], index: number }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 20 });
-  
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['8deg', '-8deg']);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-8deg', '8deg']);
-  
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    
-    const rect = ref.current.getBoundingClientRect();
-    
-    const width = rect.width;
-    const height = rect.height;
-    
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    
-    x.set(xPct);
-    y.set(yPct);
-  };
-  
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-  
+function DomainCard({ domain }: { domain: typeof DOMAINS[0] }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-      style={{ perspective: 1000 }}
-      className="h-full"
+      className="neo-card flex flex-col h-full cursor-pointer"
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
     >
-      <motion.div
-        ref={ref}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          rotateX,
-          rotateY,
-          backgroundColor: 'var(--surface, #0e0e14)',
-          borderColor: 'var(--border, #1e1e2e)',
-        }}
-        whileHover={{
-          y: -4,
-          backgroundColor: 'var(--surface-2, #16161f)',
-          borderColor: 'var(--accent, #8b5cf6)',
-          boxShadow: '0 0 20px rgba(139,92,246,0.15)',
-        }}
-        className="h-full border rounded-xl p-7 transition-colors duration-300 flex flex-col cursor-pointer"
-      >
-        <div className="text-[48px] leading-none mb-6">
-          {domain.icon}
-        </div>
-        <h3 className="text-xl font-bold text-white mb-4 font-['Space_Grotesk'] tracking-wide">
-          {domain.title}
-        </h3>
-        <div className="flex flex-wrap gap-2 mt-auto">
-          {domain.tools.map(tool => (
-            <span
-              key={tool}
-              className="px-3 py-1 text-xs font-mono rounded-full border border-[var(--border,#1e1e2e)] bg-[rgba(139,92,246,0.12)] text-gray-300"
-            >
-              {tool}
-            </span>
-          ))}
-        </div>
-      </motion.div>
+      <div className="text-[48px] leading-none mb-4">
+        {domain.icon}
+      </div>
+      <h3 className="mb-4">
+        {domain.title}
+      </h3>
+      <p className="font-body text-[var(--text-muted)] font-bold text-sm md:text-base mb-6 flex-grow">
+        {domain.description}
+      </p>
+      <div className="flex flex-wrap gap-2 mt-auto">
+        {domain.tools.map(tool => (
+          <span
+            key={tool}
+            className="px-2 py-1 text-xs md:text-sm border-2 border-[var(--border)] bg-[var(--surface)] text-[var(--border)] font-bold uppercase"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            {tool}
+          </span>
+        ))}
+      </div>
     </motion.div>
   );
-};
+}
 
-export default function Domains() {
+export function Domains() {
   return (
-    <section id="domains" className="py-24 px-6 md:px-12 lg:px-24 w-full">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-16">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-gray-400 font-mono text-sm uppercase tracking-widest mb-2"
-          >
-            WHAT WE DO
-          </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-bold text-white font-['Space_Grotesk']"
-          >
-            Our Domains
-          </motion.h2>
+    <section id="domains" className="section bg-[var(--bg)]">
+      <div className="container">
+        <div className="mb-16 flex flex-col items-center text-center mx-auto max-w-3xl">
+          <span className="eyebrow mb-4">Core Domains</span>
+          <h2 className="mb-4">Choose Your Path</h2>
+          <p className="font-body text-[var(--text-muted)] font-bold max-w-2xl text-lg md:text-xl">
+            Whether you want to build games, design them, or play them competitively — there's a place for you here.
+          </p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {domains.map((domain, index) => (
-            <DomainCard key={domain.id} domain={domain} index={index} />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
+          {DOMAINS.map((domain, i) => (
+            <motion.div
+              key={domain.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ delay: i * 0.1, duration: 0.4 }}
+            >
+              <DomainCard domain={domain} />
+            </motion.div>
           ))}
         </div>
       </div>

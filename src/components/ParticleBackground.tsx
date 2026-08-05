@@ -9,166 +9,135 @@ export function ParticleBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Non-null aliases after the guard
-    const c = canvas;
-    const g = ctx;
+    let animId: number;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
 
-    let animationFrameId: number;
-    const numParticles = 50;
-    const mouse = { x: -1000, y: -1000 };
+    const particles: Particle[] = [];
+    const spacing = 40; // Grid spacing for neobrutalist look
+    const cols = Math.floor(width / spacing) + 2;
+    const rows = Math.floor(height / spacing) + 2;
+
+    const mouse = { x: -1000, y: -1000, radius: 150 };
+
+    class Particle {
+      x: number;
+      y: number;
+      ox: number;
+      oy: number;
+      color: string;
+
+      constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+        this.ox = x;
+        this.oy = y;
+        // Randomly assign a neobrutalist accent color to some points
+        const rand = Math.random();
+        if (rand > 0.95) this.color = "#ff3b30";
+        else if (rand > 0.9) this.color = "#32d74b";
+        else if (rand > 0.85) this.color = "#ffd60a";
+        else this.color = "#111111";
+      }
+
+      update() {
+        const dx = mouse.x - this.ox;
+        const dy = mouse.y - this.oy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        // Repel from mouse
+        if (dist < mouse.radius) {
+          const force = (mouse.radius - dist) / mouse.radius;
+          this.x = this.ox - (dx / dist) * force * 40;
+          this.y = this.oy - (dy / dist) * force * 40;
+        } else {
+          // Spring back to original position
+          this.x += (this.ox - this.x) * 0.1;
+          this.y += (this.oy - this.y) * 0.1;
+        }
+      }
+
+      draw() {
+        if (!ctx) return;
+        ctx.fillStyle = this.color;
+        // Draw a stark square instead of a soft circle for neobrutalism
+        ctx.fillRect(this.x - 2, this.y - 2, 4, 4);
+      }
+    }
+
+    // Initialize grid of particles
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        particles.push(new Particle(i * spacing - spacing/2, j * spacing - spacing/2));
+      }
+    }
+
+    function draw() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, width, height);
+
+      particles.forEach(p => p.update());
+
+      // Draw connections (wireframe mesh)
+      ctx.beginPath();
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          const idx = i * rows + j;
+          const p = particles[idx];
+          
+          if (i < cols - 1) {
+            const right = particles[(i + 1) * rows + j];
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(right.x, right.y);
+          }
+          if (j < rows - 1) {
+            const bottom = particles[i * rows + (j + 1)];
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(bottom.x, bottom.y);
+          }
+        }
+      }
+      ctx.strokeStyle = "rgba(17, 17, 17, 0.15)"; // Stark but faint black lines
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Draw particle nodes on top
+      particles.forEach(p => p.draw());
+
+      animId = requestAnimationFrame(draw);
+    }
 
     const handleMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     };
-    const handleMouseLeave = () => {
-      mouse.x = -1000;
-      mouse.y = -1000;
+
+    const handleResize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseout", handleMouseLeave);
+    window.addEventListener("resize", handleResize);
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    interface Particle {
-      x: number;
-      y: number;
-      size: number;
-      color: string;
-      speedY: number;
-      angle: number;
-      angleSpeed: number;
-      vx: number;
-      vy: number;
-    }
-
-    function createParticle(): Particle {
-      return {
-        x: Math.random() * c.width,
-        y: Math.random() * c.height,
-        size: Math.random() * 2 + 2,
-        color: Math.random() > 0.5 ? "rgba(139,92,246,0.4)" : "rgba(6,182,212,0.2)",
-        speedY: Math.random() * 0.5 + 0.2,
-        angle: Math.random() * Math.PI * 2,
-        angleSpeed: Math.random() * 0.02 + 0.01,
-        vx: 0,
-        vy: 0,
-      };
-    }
-
-    function updateParticle(p: Particle) {
-      if (prefersReducedMotion) return;
-
-      p.y -= p.speedY;
-      p.angle += p.angleSpeed;
-      p.x += Math.sin(p.angle) * 0.5;
-
-      if (p.y < -10) {
-        p.y = c.height + 10;
-        p.x = Math.random() * c.width;
-      }
-
-      // Mouse interaction — push away
-      const dx = mouse.x - p.x;
-      const dy = mouse.y - p.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      const maxDistance = 150;
-
-      if (distance < maxDistance && distance > 0) {
-        const force = (maxDistance - distance) / maxDistance;
-        p.vx -= (dx / distance) * force * 0.5;
-        p.vy -= (dy / distance) * force * 0.5;
-      }
-
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vx *= 0.9;
-      p.vy *= 0.9;
-    }
-
-    function drawParticle(p: Particle) {
-      g.beginPath();
-      g.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      g.fillStyle = p.color;
-      g.fill();
-    }
-
-    let particles: Particle[] = [];
-
-    function initParticles() {
-      particles = [];
-      for (let i = 0; i < numParticles; i++) {
-        particles.push(createParticle());
-      }
-    }
-
-    function resize() {
-      c.width = window.innerWidth;
-      c.height = window.innerHeight;
-      initParticles();
-    }
-
-    function drawLines() {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 120) {
-            g.beginPath();
-            g.moveTo(particles[i].x, particles[i].y);
-            g.lineTo(particles[j].x, particles[j].y);
-            g.strokeStyle = "rgba(139,92,246,0.06)";
-            g.lineWidth = 1;
-            g.stroke();
-          }
-        }
-      }
-    }
-
-    function animate() {
-      g.clearRect(0, 0, c.width, c.height);
-
-      for (const p of particles) {
-        updateParticle(p);
-        drawParticle(p);
-      }
-
-      drawLines();
-
-      if (!prefersReducedMotion) {
-        animationFrameId = requestAnimationFrame(animate);
-      }
-    }
-
-    window.addEventListener("resize", resize);
-
-    resize();
-    animate();
+    draw();
 
     return () => {
-      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(animId);
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseout", handleMouseLeave);
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      aria-hidden="true"
+      className="fixed inset-0 -z-10 pointer-events-none"
       style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        zIndex: -1,
-        pointerEvents: "none",
-        background: "transparent",
+        WebkitMaskImage: "linear-gradient(to right, black 0%, transparent 20%, transparent 80%, black 100%)",
+        maskImage: "linear-gradient(to right, black 0%, transparent 20%, transparent 80%, black 100%)"
       }}
     />
   );

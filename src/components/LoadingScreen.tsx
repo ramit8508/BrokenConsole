@@ -7,46 +7,14 @@ interface LoadingScreenProps {
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
-  const [text, setText] = useState('');
   const [showSkip, setShowSkip] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
-    // Show skip button after 1s
-    const skipTimer = setTimeout(() => {
-      setShowSkip(true);
-    }, 1000);
+    const skipTimer = setTimeout(() => setShowSkip(true), 800);
 
-    // Typing effect
-    const messages = ['INITIALIZING...', 'BROKEN CONSOLE ONLINE'];
-    let currentMessageIndex = 0;
-    let charIndex = 0;
-    
-    let currentMessage = messages[currentMessageIndex];
-    let typeTimeout: ReturnType<typeof setTimeout>;
-
-    const typeWriter = () => {
-      if (charIndex < currentMessage.length) {
-        setText(currentMessage.slice(0, charIndex + 1));
-        charIndex++;
-        typeTimeout = setTimeout(typeWriter, 50);
-      } else {
-        typeTimeout = setTimeout(() => {
-          if (currentMessageIndex < messages.length - 1) {
-            currentMessageIndex++;
-            currentMessage = messages[currentMessageIndex];
-            charIndex = 0;
-            typeWriter();
-          }
-        }, 800); // Wait before next message
-      }
-    };
-
-    typeWriter();
-
-    // Progress bar
-    const duration = 2500;
-    const interval = 25;
+    const duration = 1800;
+    const interval = 20;
     const steps = duration / interval;
     let currentStep = 0;
 
@@ -57,31 +25,31 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
 
       if (currentStep >= steps) {
         clearInterval(progressInterval);
-        setTimeout(handleComplete, 600); // Wait a bit after 100% before firing complete
+        setTimeout(handleComplete, 300);
       }
     }, interval);
 
     return () => {
       clearTimeout(skipTimer);
-      clearTimeout(typeTimeout);
       clearInterval(progressInterval);
     };
   }, []);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && showSkip) {
-        handleComplete();
-      }
-    };
+    const handleKeyDown = () => { if (showSkip) handleComplete(); };
+    const handleClick = () => { if (showSkip) handleComplete(); };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('click', handleClick);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('click', handleClick);
+    };
   }, [showSkip]);
 
   const handleComplete = () => {
     if (isCompleted) return;
     setIsCompleted(true);
-    setTimeout(onComplete, 500); // Allow fade out animation
+    setTimeout(onComplete, 400);
   };
 
   return (
@@ -89,83 +57,93 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
       {!isCompleted && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center font-mono"
-          style={{ backgroundColor: 'var(--bg, #050507)', color: 'var(--text, #eeeef0)' }}
+          exit={{ opacity: 0, y: "-100%" }}
+          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[var(--accent-2)] text-[var(--border)] overflow-hidden"
         >
-          <div className="flex flex-col items-center w-full max-w-md px-6">
-            <motion.img
-              src="/logo.jpeg"
-              alt="Broken Console Logo"
-              className="w-32 h-32 mb-10 object-contain rounded-full"
-              style={{ filter: 'drop-shadow(0 0 20px rgba(139,92,246,0.5))' }}
-              animate={{
-                scale: [1, 1.05, 1],
-                opacity: [0.8, 1, 0.8],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
+          {/* Neobrutal pattern background */}
+          <div 
+            className="absolute inset-0 opacity-[0.2]" 
+            style={{ 
+              backgroundImage: `radial-gradient(var(--border) 2px, transparent 2px)`,
+              backgroundSize: '24px 24px' 
+            }} 
+          />
 
-            <div className="h-6 mb-6 text-center text-lg font-bold tracking-wider" style={{ color: 'var(--accent, #8b5cf6)' }}>
-              {text}
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.5, repeat: Infinity }}
-              >
-                _
-              </motion.span>
-            </div>
-
-            <div className="w-full mb-2 flex justify-between text-xs tracking-widest" style={{ color: 'var(--text-muted, #7a7a8c)' }}>
-              <span>SYSTEM_BOOT</span>
-              <span>{Math.round(progress)}%</span>
-            </div>
-
-            <div 
-              className="w-full h-1.5 rounded-full overflow-hidden"
-              style={{ backgroundColor: 'var(--surface, #0e0e14)' }}
+          <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 w-full max-w-4xl">
+            
+            {/* Neobrutal Logo Container */}
+            <motion.div
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="mb-8"
             >
-              <motion.div 
-                className="h-full rounded-full relative"
-                style={{ backgroundColor: 'var(--accent, #8b5cf6)' }}
-                initial={{ width: '0%' }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.1 }}
-              >
-                <motion.div 
-                  className="absolute top-0 right-0 bottom-0 w-8"
-                  style={{ 
-                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4))',
-                    filter: 'blur(2px)'
-                  }}
-                  animate={{ opacity: [0, 1, 0] }}
-                  transition={{ duration: 1, repeat: Infinity }}
+              <div className="w-32 h-32 md:w-48 md:h-48 bg-white border-[6px] border-[var(--border)] shadow-[8px_8px_0px_var(--border)] overflow-hidden">
+                <img
+                  src="/logo.jpeg"
+                  alt="Broken Console Logo"
+                  className="w-full h-full object-cover"
                 />
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
+
+            {/* Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-4xl md:text-6xl lg:text-8xl font-display tracking-tight mb-4"
+              style={{
+                textShadow: '4px 4px 0px var(--surface), 8px 8px 0px var(--border)'
+              }}
+            >
+              BROKEN CONSOLE
+            </motion.h1>
+
+            {/* Subtitle Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              className="neo-badge bg-[var(--accent)] text-[var(--surface)] mb-12"
+            >
+              <span className="w-2 h-2 bg-white border-2 border-[var(--border)] animate-pulse" />
+              SYSTEM INITIALIZING
+            </motion.div>
+
+            {/* Progress Bar */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.4 }}
+              className="w-full max-w-md px-6"
+            >
+              <div className="h-6 w-full bg-[var(--surface)] border-4 border-[var(--border)] shadow-[6px_6px_0px_var(--border)] p-1">
+                <motion.div
+                  className="h-full bg-[var(--accent-3)] border-r-4 border-[var(--border)]"
+                  style={{ width: `${progress}%` }}
+                  transition={{ ease: "linear" }}
+                />
+              </div>
+              <div className="flex justify-between items-center mt-4 font-display text-sm md:text-base font-bold">
+                <span>LOADING...</span>
+                <span>{Math.round(progress)}%</span>
+              </div>
+            </motion.div>
           </div>
 
+          {/* Bottom Skip Indicator */}
           <AnimatePresence>
             {showSkip && (
-              <motion.button
-                initial={{ opacity: 0, y: 10 }}
+              <motion.div
+                initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                onClick={handleComplete}
-                className="absolute bottom-10 right-10 px-4 py-2 text-xs tracking-widest rounded transition-all hover:bg-white/5 active:scale-95"
-                style={{ 
-                  color: 'var(--text-muted, #7a7a8c)',
-                  border: '1px solid var(--border, #1e1e2e)',
-                  backgroundColor: 'var(--surface, #0e0e14)'
-                }}
+                className="absolute bottom-8 font-display text-xs md:text-sm tracking-widest bg-[var(--border)] text-[var(--surface)] px-4 py-2"
               >
-                SKIP [ESC]
-              </motion.button>
+                PRESS ANY KEY
+              </motion.div>
             )}
           </AnimatePresence>
         </motion.div>

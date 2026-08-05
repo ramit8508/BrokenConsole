@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
-import Domains from "./components/Domains";
+import { Domains } from "./components/Domains";
 import { Events } from "./components/Events";
 import { Team } from "./components/Team";
 import { Contact } from "./components/Contact";
@@ -9,7 +9,7 @@ import { Footer } from "./components/Footer";
 import { StatusBar } from "./components/StatusBar";
 import { ParticleBackground } from "./components/ParticleBackground";
 import LoadingScreen from "./components/LoadingScreen";
-import { CustomCursor } from "./components/CustomCursor";
+// import { CustomCursor } from "./components/CustomCursor";
 import { AchievementPopup } from "./components/AchievementPopup";
 import { useSessionProgress } from "./hooks/useSessionProgress";
 import { useSectionAchievement } from "./hooks/useSectionAchievement";
@@ -35,8 +35,7 @@ function App() {
           {/* Interactive background */}
           <ParticleBackground />
 
-          {/* Custom cursor (desktop only) */}
-          <CustomCursor />
+          {/* Custom cursor removed */}
 
           <Navbar />
 

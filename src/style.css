@@ -1,83 +1,67 @@
+/* ── Fonts ───────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;600;700&display=swap');
 @import 'tailwindcss';
 
-@import '@fontsource/space-grotesk/400.css';
-@import '@fontsource/space-grotesk/500.css';
-@import '@fontsource/space-grotesk/600.css';
-@import '@fontsource/space-grotesk/700.css';
-
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
-@import '@fontsource/inter/600.css';
-
-@import '@fontsource/jetbrains-mono/400.css';
-@import '@fontsource/jetbrains-mono/500.css';
-
 @theme {
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-border: var(--border);
-  --color-text: var(--text);
-  --color-text-muted: var(--text-muted);
-  --color-accent: var(--accent);
-  --color-accent-2: var(--accent-2);
-  --color-accent-glow: var(--accent-glow);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
+  --font-display: 'Press Start 2P', monospace;
+  --font-body:    'Space Grotesk', sans-serif;
+  --font-mono:    'Press Start 2P', monospace;
+
+  --color-bg:          var(--bg);
+  --color-surface:     var(--surface);
+  --color-border:      var(--border);
+  --color-text:        var(--text);
+  --color-text-muted:  var(--text-muted);
+  --color-accent:      var(--accent);
+  --color-accent-2:    var(--accent-2);
 }
 
 :root {
-  --bg: #050507;
-  --surface: #0e0e14;
-  --surface-2: #16161f;
-  --border: #1e1e2e;
-  --text: #eeeef0;
-  --text-muted: #7a7a8c;
-  --accent: #8b5cf6;
-  --accent-2: #06b6d4;
-  --accent-glow: rgba(139,92,246,0.4);
-  --success: #22c55e;
-  --warning: #eab308;
+  /* ── Minimalist Neobrutalism Palette ───────────────────────────────────── */
+  --bg:            #f4f0e6; /* Warm cream background */
+  --surface:       #ffffff; /* Pure white for cards */
+  --border:        #111111; /* Stark black */
+  --text:          #111111;
+  --text-muted:    #444444;
+  
+  /* Vibrant accents suited for gaming */
+  --accent:        #ff3b30; /* Bright Red */
+  --accent-2:      #ffd60a; /* Bright Yellow */
+  --accent-3:      #32d74b; /* Retro Green */
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   min-height: 100vh;
-  position: relative;
+  overflow-x: hidden;
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background-image:
-    linear-gradient(rgba(139,92,246,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139,92,246,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, #000 70%, transparent 100%);
-}
-
+/* ── Typography ──────────────────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.2;
   margin-top: 0;
+  text-transform: uppercase;
 }
+
+h1 { font-size: clamp(1.8rem, 4vw, 3rem); }
+h2 { font-size: clamp(1.2rem, 3vw, 2rem); }
+h3 { font-size: clamp(0.9rem, 2vw, 1.25rem); }
 
 a {
   color: inherit;
@@ -89,235 +73,89 @@ button {
   font-family: inherit;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* ── Neobrutalism Elements ───────────────────────────────────────────────── */
+.neo-card {
+  background-color: var(--surface);
+  border: 4px solid var(--border);
+  box-shadow: 8px 8px 0px var(--border);
+  transition: all 0.2s ease;
+  padding: 1.5rem;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--bg);
+.neo-card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 12px 12px 0px var(--border);
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--surface-2);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-}
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.section {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-}
-
-@media (min-width: 768px) {
-  .section {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-  }
-}
-
-/* Base button styles */
-.btn {
+.neo-btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.btn-primary {
+  padding: 1rem 2rem;
   background-color: var(--accent);
-  color: #fff;
-  box-shadow: 0 0 15px var(--accent-glow);
+  color: var(--surface);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  text-transform: uppercase;
+  border: 4px solid var(--border);
+  box-shadow: 6px 6px 0px var(--border);
+  transition: all 0.15s ease;
 }
 
-.btn-primary:hover {
+.neo-btn-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px var(--border);
   background-color: var(--accent-2);
-  transform: translateY(-1px);
-  box-shadow: 0 0 20px var(--accent-glow);
+  color: var(--border);
 }
 
-.btn-outline {
-  border-color: var(--border);
-  background-color: transparent;
+.neo-btn-primary:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px var(--border);
 }
 
-.btn-outline:hover {
-  border-color: var(--accent);
-  background-color: rgba(139, 92, 246, 0.1);
-  box-shadow: 0 0 10px var(--accent-glow);
-  transform: translateY(-1px);
-}
-
-.pill {
+.neo-btn-secondary {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  background-color: var(--surface-2);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-}
-
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-}
-
-.mono {
-  font-family: var(--font-mono);
-}
-
-.divider {
-  height: 1px;
-  background-color: var(--border);
-  width: 100%;
-}
-
-.card {
+  justify-content: center;
+  padding: 1rem 2rem;
   background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
+  color: var(--border);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  text-transform: uppercase;
+  border: 4px solid var(--border);
+  box-shadow: 6px 6px 0px var(--border);
+  transition: all 0.15s ease;
 }
 
-.card:hover {
-  border-color: var(--accent);
-  background-color: var(--surface-2);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 20px var(--accent-glow);
+.neo-btn-secondary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px var(--border);
+  background-color: var(--accent-3);
 }
 
-/* Glow / Neon utility classes */
-.glow-accent {
-  box-shadow: 0 0 20px var(--accent-glow);
+.neo-btn-secondary:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px var(--border);
 }
 
-.glow-text {
-  text-shadow: 0 0 10px var(--accent-glow);
+.neo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--accent-2);
+  color: var(--border);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  border: 3px solid var(--border);
+  box-shadow: 4px 4px 0px var(--border);
 }
 
-.glass {
-  background-color: rgba(14, 14, 20, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.shimmer {
-  position: relative;
-  overflow: hidden;
-}
-
-.shimmer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  transform: skewX(-20deg);
-  transition: all 0.5s ease;
-}
-
-.shimmer:hover::before {
-  left: 150%;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { 
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to { 
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes glitchText {
-  0% { transform: translate(0) }
-  20% { transform: translate(-2px, 2px) }
-  40% { transform: translate(-2px, -2px) }
-  60% { transform: translate(2px, 2px) }
-  80% { transform: translate(2px, -2px) }
-  100% { transform: translate(0) }
-}
-
-@keyframes scanLine {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100vh); }
-}
-
-@keyframes progressFill {
-  from { width: 0%; }
-  to { width: 100%; }
-}
-
-@keyframes slideInRight {
-  from { 
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  to { 
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeOutRight {
-  from { 
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to { 
-    opacity: 0;
-    transform: translateX(100%);
-  }
+.neo-highlight {
+  background-color: var(--accent-2);
+  padding: 0 0.25rem;
+  border: 2px solid var(--border);
 }
