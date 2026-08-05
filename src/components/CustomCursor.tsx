@@ -58,33 +58,50 @@ export function CustomCursor() {
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 w-6 h-6 border-2 rounded-full pointer-events-none z-[9999]"
+        className="fixed top-0 left-0 pointer-events-none z-[9999]"
         style={{
-          borderColor: 'var(--accent, #8b5cf6)',
+          width: '34px',
+          height: '34px',
           x: cursorXSpring,
           y: cursorYSpring,
           translateX: '-50%',
           translateY: '-50%',
         }}
         animate={{
-          scale: isHovering ? 1.5 : 1,
+          scale: isHovering ? 1.12 : 1,
         }}
-        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        transition={{ type: 'spring', stiffness: 340, damping: 24 }}
       />
       <motion.div
-        className="fixed top-0 left-0 w-[6px] h-[6px] rounded-full pointer-events-none z-[9999]"
+        className="fixed top-0 left-0 pointer-events-none z-[9999]"
         style={{
-          backgroundColor: 'var(--accent, #8b5cf6)',
+          width: '34px',
+          height: '34px',
           x: mouseX,
           y: mouseY,
           translateX: '-50%',
           translateY: '-50%',
         }}
         animate={{
-          scale: isHovering ? 0 : 1,
+          scale: isHovering ? 0.96 : 1,
         }}
         transition={{ duration: 0.15 }}
-      />
+      >
+        <img
+          src="/cursors/contra-player-cursor.svg"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'block',
+            imageRendering: 'pixelated',
+            filter: 'drop-shadow(0 0 10px rgba(255, 122, 54, 0.45))',
+            transform: isHovering ? 'translateY(-1px)' : 'translateY(0)',
+          }}
+        />
+      </motion.div>
     </>
   );
 }

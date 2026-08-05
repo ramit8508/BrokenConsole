@@ -12,12 +12,6 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
-    // Check session storage
-    if (sessionStorage.getItem('loadingScreenShown')) {
-      onComplete();
-      return;
-    }
-
     // Show skip button after 1s
     const skipTimer = setTimeout(() => {
       setShowSkip(true);
@@ -86,14 +80,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
 
   const handleComplete = () => {
     if (isCompleted) return;
-    sessionStorage.setItem('loadingScreenShown', 'true');
     setIsCompleted(true);
     setTimeout(onComplete, 500); // Allow fade out animation
   };
-
-  if (sessionStorage.getItem('loadingScreenShown') && !isCompleted) {
-    return null; // Already completed in previous session
-  }
 
   return (
     <AnimatePresence>

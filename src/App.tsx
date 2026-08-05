@@ -27,7 +27,7 @@ function App() {
 
   return (
     <>
-      {/* Loading screen — once per session */}
+      {/* Loading screen on startup */}
       <LoadingScreen onComplete={() => setLoaded(true)} />
 
       {loaded && (
