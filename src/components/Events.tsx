@@ -21,7 +21,19 @@ function EventCard({ event, index }: { event: Event; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.35, ease: "easeOut", delay: index * 0.1 }}
-      style={{ padding: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}
+      style={{ 
+        padding: 0, 
+        display: "flex", 
+        flexDirection: "column", 
+        overflow: "hidden",
+        "--surface": "#1a242c",
+        "--border": "#8cbdb9",
+        "--text": "#f4f0e6",
+        "--text-muted": "#a8c0cc",
+        "--accent": "#9c1b1b",
+        "--accent-2": "#d4af37",
+        color: "var(--text)"
+      } as React.CSSProperties}
       aria-label={`Event: ${event.title}`}
     >
       {/* Event banner image */}
@@ -58,6 +70,8 @@ function EventCard({ event, index }: { event: Event; index: number }) {
             background: "var(--accent)",
             color: "var(--surface)",
             borderColor: "var(--border)",
+            fontFamily: "var(--font-norse)",
+            letterSpacing: "0.1em",
           }}
         >
           {TAG_LABELS[event.tag]}
@@ -86,7 +100,7 @@ function EventCard({ event, index }: { event: Event; index: number }) {
       {/* Card body */}
       <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: "12px", flexGrow: 1 }}>
         {/* Title */}
-        <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.5rem", lineHeight: "1.2", margin: 0 }}>
+        <h3 style={{ fontFamily: "var(--font-norse)", fontSize: "1.8rem", lineHeight: "1.1", margin: 0, textTransform: "uppercase", letterSpacing: "0.05em", color: "#e0e6ed" }}>
           {event.title}
         </h3>
 
@@ -133,7 +147,7 @@ function EventCard({ event, index }: { event: Event; index: number }) {
             borderTop: "1px solid var(--border)",
           }}
         >
-          <span style={{ fontFamily: "var(--font-display)", fontSize: "1rem", color: "var(--accent)", letterSpacing: "0.04em" }}>
+          <span style={{ fontFamily: "var(--font-norse)", fontSize: "1.2rem", color: "var(--accent-2)", letterSpacing: "0.04em", fontWeight: 700 }}>
             {event.reward}
           </span>
           <a
@@ -141,7 +155,7 @@ function EventCard({ event, index }: { event: Event; index: number }) {
             target="_blank"
             rel="noopener noreferrer"
             className="neo-btn-primary"
-            style={{ fontSize: "1rem", padding: "8px 16px" }}
+            style={{ fontSize: "1.1rem", padding: "8px 16px", fontFamily: "var(--font-norse)", letterSpacing: "0.1em", fontWeight: 700 }}
             aria-label={`Register for ${event.title}`}
           >
             REGISTER
@@ -232,24 +246,15 @@ export function Events() {
     <section id="events" className="section" aria-labelledby="events-heading">
       <div className="container">
         <div className="flex flex-col items-center text-center mx-auto mb-16 max-w-3xl">
-          <motion.span
-            className="eyebrow mb-4"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.3 }}
-          >
-            Upcoming
-          </motion.span>
           <motion.h2
             id="events-heading"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.35, delay: 0.05 }}
+            transition={{ duration: 0.35 }}
             className="mb-0"
           >
-            Events
+            UPCOMING EVENTS
           </motion.h2>
         </div>
 
