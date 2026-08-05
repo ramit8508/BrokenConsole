@@ -249,7 +249,7 @@ export function Hero() {
           <motion.div variants={itemVariants} style={{ marginBottom: "16px" }}>
             <span
               style={{
-                fontFamily: "var(--font-mono)",
+                fontFamily: "var(--font-hero)",
                 fontSize: "0.875rem",
                 letterSpacing: "0.1em",
                 color: "var(--accent-2)",

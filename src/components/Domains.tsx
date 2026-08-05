@@ -105,7 +105,7 @@ const DomainCard = ({ domain, index }: { domain: typeof domains[0], index: numbe
         <div className="text-[48px] leading-none mb-6">
           {domain.icon}
         </div>
-        <h3 className="text-xl font-bold text-white mb-4 font-['Space_Grotesk'] tracking-wide">
+        <h3 className="text-xl font-bold text-white mb-4 tracking-wide" style={{ fontFamily: 'var(--font-hero)' }}>
           {domain.title}
         </h3>
         <div className="flex flex-wrap gap-2 mt-auto">

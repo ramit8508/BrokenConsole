@@ -23,23 +23,13 @@ function EventCard({ event, index }: { event: Event; index: number }) {
       style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "16px" }}
       aria-label={`Event: ${event.title}`}
     >
-      {/* Top row */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
-        <span className="pill">{TAG_LABELS[event.tag]}</span>
-        <span
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.8125rem",
-            color: isLow ? "var(--warning)" : "var(--text-muted)",
-            letterSpacing: "0.04em",
-          }}
-          aria-label={`${event.seatsTaken} of ${event.seatsTotal} seats taken`}
-        >
-          {event.seatsTaken}/{event.seatsTotal} seats
-        </span>
-      </div>
-
       {/* Title */}
+      {event.image ? (
+        <div style={{ width: '100%', height: 160, overflow: 'hidden', borderRadius: 8 }}>
+          <img src={event.image} alt={event.imageAlt || event.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </div>
+      ) : null}
+
       <h3 style={{ fontFamily: "var(--font-display)", lineHeight: "1.25" }}>{event.title}</h3>
 
       {/* Meta */}
@@ -107,6 +97,8 @@ function EventCard({ event, index }: { event: Event; index: number }) {
 }
 
 export function Events() {
+  const events = upcomingEvents;
+
   return (
     <section id="events" className="section" aria-labelledby="events-heading">
       <div className="container">
@@ -139,7 +131,7 @@ export function Events() {
             marginBottom: "64px",
           }}
         >
-          {upcomingEvents.map((event, i) => (
+          {events.map((event, i) => (
             <EventCard key={event.id} event={event} index={i} />
           ))}
         </div>

@@ -9,6 +9,8 @@ export interface Event {
   seatsTotal: number;
   seatsTaken: number;
   formUrl: string;
+  image?: string; // optional data-URL or path to image
+  imageAlt?: string;
 }
 
 export interface PastEvent {

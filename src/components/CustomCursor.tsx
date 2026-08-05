@@ -60,47 +60,54 @@ export function CustomCursor() {
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[9999]"
         style={{
-          width: '34px',
-          height: '34px',
+          width: '40px',
+          height: '40px',
           x: cursorXSpring,
           y: cursorYSpring,
           translateX: '-50%',
           translateY: '-50%',
         }}
         animate={{
-          scale: isHovering ? 1.12 : 1,
+          scale: isHovering ? 1.08 : 1,
+          opacity: isHovering ? 0.95 : 1,
         }}
         transition={{ type: 'spring', stiffness: 340, damping: 24 }}
       />
+
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[9999]"
         style={{
-          width: '34px',
-          height: '34px',
+          width: '40px',
+          height: '40px',
           x: mouseX,
           y: mouseY,
           translateX: '-50%',
           translateY: '-50%',
         }}
         animate={{
-          scale: isHovering ? 0.96 : 1,
+          scale: isHovering ? 0.98 : 1,
         }}
-        transition={{ duration: 0.15 }}
+        transition={{ duration: 0.12 }}
       >
-        <img
-          src="/cursors/contra-player-cursor.svg"
-          alt=""
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 24 24"
+          fill="none"
           aria-hidden="true"
-          draggable="false"
-          style={{
-            width: '100%',
-            height: '100%',
-            display: 'block',
-            imageRendering: 'pixelated',
-            filter: 'drop-shadow(0 0 10px rgba(255, 122, 54, 0.45))',
-            transform: isHovering ? 'translateY(-1px)' : 'translateY(0)',
-          }}
-        />
+          style={{ display: 'block' }}
+        >
+          <g stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="2" x2="12" y2="6" />
+            <line x1="12" y1="18" x2="12" y2="22" />
+            <line x1="2" y1="12" x2="6" y2="12" />
+            <line x1="18" y1="12" x2="22" y2="12" />
+            <circle cx="12" cy="12" r="2" fill="white" />
+          </g>
+          <g stroke="rgba(139,92,246,0.6)" strokeWidth="0.6">
+            <circle cx="12" cy="12" r="6" fill="none" />
+          </g>
+        </svg>
       </motion.div>
     </>
   );

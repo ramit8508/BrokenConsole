@@ -1,9 +1,18 @@
+/* Load requested site fonts (kept via Google Fonts for local dev). */
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Orbitron:wght@800&family=Oxanium:wght@600&family=Rajdhani:wght@600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @import 'tailwindcss';
 
-@import '@fontsource/space-grotesk/400.css';
-@import '@fontsource/space-grotesk/500.css';
-@import '@fontsource/space-grotesk/600.css';
-@import '@fontsource/space-grotesk/700.css';
+/* Primary gamified font: if you add a local Knight Warrior font file to /public/fonts/,
+   it will be used. Otherwise we fall back to the Google 'Press Start 2P' retro font. */
+@font-face {
+  font-family: 'Knight Warrior';
+  src: url('/fonts/KnightWarrior.woff2') format('woff2'),
+       url('/fonts/KnightWarrior.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
@@ -13,8 +22,10 @@
 @import '@fontsource/jetbrains-mono/500.css';
 
 @theme {
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-hero: 'Black Ops One', 'Orbitron', 'Press Start 2P', sans-serif;
+  --font-display: 'Oxanium', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-ui: 'Rajdhani', 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   
   --color-bg: var(--bg);
@@ -72,7 +83,14 @@ body::before {
   mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, #000 70%, transparent 100%);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1 {
+  font-family: var(--font-hero);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-top: 0;
+}
+
+h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 600;
   line-height: 1.2;
@@ -86,7 +104,11 @@ a {
 
 button {
   cursor: pointer;
-  font-family: inherit;
+  font-family: var(--font-ui);
+}
+
+nav, .navbar {
+  font-family: var(--font-ui);
 }
 
 ::-webkit-scrollbar {
@@ -150,6 +172,7 @@ button {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-weight: 500;
+  font-family: var(--font-ui);
   transition: all 0.2s ease;
   border: 1px solid transparent;
 }
