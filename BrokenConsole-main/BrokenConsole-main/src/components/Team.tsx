@@ -22,12 +22,12 @@ function getAvatarBg(name: string): string {
 function TeamCard({ member, index }: { member: TeamMember; index: number }) {
   return (
     <motion.article
-      className="card"
+      className="neo-card w-full"
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.4, ease: "easeOut", delay: index * 0.08 }}
-      style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "16px" }}
+      style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "16px", height: "100%" }}
       aria-label={`Team member: ${member.name}, ${member.role}`}
     >
       {/* Avatar */}
@@ -89,7 +89,7 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
           display: "flex",
           gap: "16px",
           paddingTop: "12px",
-          borderTop: "1px solid var(--border)",
+          borderTop: "4px solid var(--border)",
           flexWrap: "wrap",
         }}
       >
@@ -125,23 +125,6 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         >
           LinkedIn
         </a>
-        <a
-          href={member.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "0.8125rem",
-            color: "var(--text-muted)",
-            textDecoration: "none",
-            transition: "color 150ms ease",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
-          aria-label={`${member.name} on GitHub`}
-        >
-          GitHub
-        </a>
       </div>
     </motion.article>
   );
@@ -151,35 +134,33 @@ export function Team() {
   return (
     <section id="team" className="section" aria-labelledby="team-heading">
       <div className="container">
-        <motion.span
-          className="eyebrow"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.4 }}
-        >
-          Core Team
-        </motion.span>
-        <motion.h2
-          id="team-heading"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.4, delay: 0.05 }}
-          style={{ marginBottom: "40px" }}
-        >
-          Who runs it
-        </motion.h2>
+        <div className="flex flex-col items-center text-center mx-auto mb-16 max-w-3xl">
+          <motion.span
+            className="eyebrow mb-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.4 }}
+          >
+            Core Team
+          </motion.span>
+          <motion.h2
+            id="team-heading"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.4, delay: 0.05 }}
+            className="mb-0"
+          >
+            Who runs it
+          </motion.h2>
+        </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-            gap: "20px",
-          }}
-        >
+        <div className="flex flex-wrap justify-center gap-6 mx-auto max-w-6xl">
           {team.map((member, i) => (
-            <TeamCard key={member.email} member={member} index={i} />
+            <div key={member.email} className="flex w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)] max-w-[320px]">
+              <TeamCard member={member} index={i} />
+            </div>
           ))}
         </div>
       </div>
