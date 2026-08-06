@@ -16,11 +16,18 @@ import { useSectionAchievement } from "./hooks/useSectionAchievement";
 
 function App() {
   const [loaded, setLoaded] = useState(false);
-  const { level, levelProgress, latestAchievement, unlockAchievement } =
-    useSessionProgress();
+  const {
+    level,
+    levelProgress,
+    totalXP,
+    latestAchievement,
+    achievementCount,
+    totalAchievements,
+    unlockAchievement,
+  } = useSessionProgress();
 
   // Fire achievements when sections come into view
-  useSectionAchievement("domains", "events", unlockAchievement);
+  useSectionAchievement("domains", "domains", unlockAchievement);
   useSectionAchievement("events", "events", unlockAchievement);
   useSectionAchievement("team", "team", unlockAchievement);
   useSectionAchievement("contact", "contact", unlockAchievement);
@@ -42,7 +49,7 @@ function App() {
           <main id="main-content">
             <Hero />
             <Domains />
-            <Events />
+            <Events onExpandPastEvent={() => unlockAchievement("curious")} />
             <Team />
             <Contact />
           </main>
@@ -56,6 +63,9 @@ function App() {
           <StatusBar
             level={level}
             levelProgress={levelProgress}
+            totalXP={totalXP}
+            achievementCount={achievementCount}
+            totalAchievements={totalAchievements}
             latestAchievement={latestAchievement}
           />
         </>

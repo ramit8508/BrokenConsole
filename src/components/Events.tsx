@@ -167,8 +167,18 @@ function EventCard({ event, index }: { event: Event; index: number }) {
 }
 
 // ── Past Event Row ─────────────────────────────────────────────────────────
-function PastEventRow({ event, index }: { event: PastEvent; index: number }) {
+function PastEventRow({ event, index, onFirstExpand }: { event: PastEvent; index: number; onFirstExpand?: () => void }) {
   const [expanded, setExpanded] = useState(false);
+  const [hasFired, setHasFired] = useState(false);
+
+  const handleToggle = () => {
+    const next = !expanded;
+    setExpanded(next);
+    if (next && !hasFired && onFirstExpand) {
+      setHasFired(true);
+      onFirstExpand();
+    }
+  };
 
   return (
     <motion.li
@@ -179,7 +189,7 @@ function PastEventRow({ event, index }: { event: PastEvent; index: number }) {
       style={{ borderBottom: "4px solid var(--border)", marginBottom: "8px" }}
     >
       <button
-        onClick={() => setExpanded(!expanded)}
+        onClick={handleToggle}
         style={{
           width: "100%",
           display: "flex",
@@ -241,7 +251,7 @@ function PastEventRow({ event, index }: { event: PastEvent; index: number }) {
 }
 
 // ── Main Events Section ────────────────────────────────────────────────────
-export function Events() {
+export function Events({ onExpandPastEvent }: { onExpandPastEvent?: () => void }) {
   return (
     <section id="events" className="section" aria-labelledby="events-heading">
       <div className="container">
@@ -296,7 +306,7 @@ export function Events() {
         <div className="mx-auto max-w-4xl">
           <ol style={{ listStyle: "none", padding: 0, margin: 0 }} aria-label="Past events list">
             {pastEvents.map((event, i) => (
-              <PastEventRow key={i} event={event} index={i} />
+              <PastEventRow key={i} event={event} index={i} onFirstExpand={onExpandPastEvent} />
             ))}
           </ol>
         </div>

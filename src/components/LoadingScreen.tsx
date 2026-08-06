@@ -138,14 +138,13 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
                     
                     {/* Logo Spinner */}
                     <div className="relative w-28 h-28 mb-5 flex items-center justify-center">
-                      <div className="absolute inset-0 rounded-full border-[4px] border-[var(--surface)] shadow-[4px_4px_0px_var(--border)]" />
-                      <div 
-                        className="absolute inset-0 rounded-full border-[4px] border-transparent border-t-[var(--accent-3)] border-l-[var(--accent-2)]"
-                        style={{ transform: `rotate(${progress * 3.6}deg)` }}
-                      />
-                      <div className="w-20 h-20 bg-[var(--surface)] overflow-hidden border-[4px] border-[var(--border)]">
+                      <div className="absolute inset-0 bg-[var(--surface)] overflow-hidden rounded-full border-[4px] border-[var(--border)] z-10">
                         <img src="/logo.jpeg" alt="Logo" className="w-full h-full object-cover" />
                       </div>
+                      <div 
+                        className="absolute -inset-3 rounded-full border-[4px] border-transparent border-t-[var(--accent-3)] border-l-[var(--accent-2)] z-20"
+                        style={{ transform: `rotate(${progress * 3.6}deg)` }}
+                      />
                     </div>
                     
                     <div className="font-display text-[9px] tracking-[0.2em] mb-1">BROKEN CONSOLE</div>
