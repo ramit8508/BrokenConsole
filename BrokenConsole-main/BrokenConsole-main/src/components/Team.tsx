@@ -125,6 +125,23 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         >
           LinkedIn
         </a>
+        <a
+          href={member.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "0.8125rem",
+            color: "var(--text-muted)",
+            textDecoration: "none",
+            transition: "color 150ms ease",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+          aria-label={`${member.name} on Instagram`}
+        >
+          Instagram
+        </a>
       </div>
     </motion.article>
   );

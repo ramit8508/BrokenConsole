@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 const SOCIAL_LINKS = [
-  { label: "WhatsApp Community", href: "#", desc: "Join our community" },
+  { label: "WhatsApp Community", href: "https://chat.whatsapp.com/IegmbAuZCJK8z3N3OfRWvw?s=sh&p=a&ilr=0", desc: "Join our community" },
   { label: "Instagram", href: "https://www.instagram.com/thebroken_consoleclub/", desc: "Follow updates" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/the-broken-console-club-undefined-5aa860423/", desc: "Connect with us" },
   { label: "YouTube", href: "https://www.youtube.com/@TheBrokenConsoleClub26", desc: "Watch our videos" },

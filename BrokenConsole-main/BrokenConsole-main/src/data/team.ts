@@ -4,7 +4,7 @@ export interface TeamMember {
   quote: string;
   email: string;
   linkedin: string;
-  github: string;
+  instagram: string;
 }
 
 // ─── Team Data ────────────────────────────────────────────────────────────
@@ -16,7 +16,7 @@ export const team: TeamMember[] = [
     quote: "Games are the medium where physics and imagination negotiate.",
     email: "arjun@brokenconsole.dev",
     linkedin: "https://linkedin.com/in/arjunmehta",
-    github: "https://github.com/arjunmehta",
+    instagram: "https://instagram.com/arjunmehta",
   },
   {
     name: "Priya Nair",
@@ -24,7 +24,7 @@ export const team: TeamMember[] = [
     quote: "Ship something broken. Fix it. Repeat.",
     email: "priya@brokenconsole.dev",
     linkedin: "https://linkedin.com/in/priyanair",
-    github: "https://github.com/priyanair",
+    instagram: "https://instagram.com/priyanair",
   },
   {
     name: "Rohan Dsouza",
@@ -32,7 +32,7 @@ export const team: TeamMember[] = [
     quote: "Competition is the clearest feedback loop.",
     email: "rohan@brokenconsole.dev",
     linkedin: "https://linkedin.com/in/rohandsouza",
-    github: "https://github.com/rohandsouza",
+    instagram: "https://instagram.com/rohandsouza",
   },
   {
     name: "Sneha Kulkarni",
@@ -40,7 +40,7 @@ export const team: TeamMember[] = [
     quote: "Every pixel is a decision.",
     email: "sneha@brokenconsole.dev",
     linkedin: "https://linkedin.com/in/snehakulkarni",
-    github: "https://github.com/snehakulkarni",
+    instagram: "https://instagram.com/snehakulkarni",
   },
   {
     name: "Dev Patel",
@@ -48,7 +48,7 @@ export const team: TeamMember[] = [
     quote: "Good code is code you can delete.",
     email: "dev@brokenconsole.dev",
     linkedin: "https://linkedin.com/in/devpatel",
-    github: "https://github.com/devpatel",
+    instagram: "https://instagram.com/devpatel",
   },
   {
     name: "Aisha Siddiqui",
@@ -56,7 +56,7 @@ export const team: TeamMember[] = [
     quote: "The best games make you forget to check your phone.",
     email: "aisha@brokenconsole.dev",
     linkedin: "https://linkedin.com/in/aishasiddiqui",
-    github: "https://github.com/aishasiddiqui",
+    instagram: "https://instagram.com/aishasiddiqui",
   },
   {
     name: "Krish Verma",
@@ -64,7 +64,7 @@ export const team: TeamMember[] = [
     quote: "Documentation is the least appreciated game mechanic.",
     email: "krish@brokenconsole.dev",
     linkedin: "https://linkedin.com/in/krishverma",
-    github: "https://github.com/krishverma",
+    instagram: "https://instagram.com/krishverma",
   },
   {
     name: "Tanvi Rao",
@@ -72,6 +72,6 @@ export const team: TeamMember[] = [
     quote: "Chaos management is just project management with extra steps.",
     email: "tanvi@brokenconsole.dev",
     linkedin: "https://linkedin.com/in/tanvirao",
-    github: "https://github.com/tanvirao",
+    instagram: "https://instagram.com/tanvirao",
   },
 ];
