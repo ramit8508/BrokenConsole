@@ -187,7 +187,7 @@ export function Domains() {
               viewport={{ once: true, margin: "-10%" }}
               transition={{ delay: i * 0.1, duration: 0.4 }}
             >
-              <DomainCard domain={domain} index={i} />
+              <DomainCard domain={domain} />
             </motion.div>
           ))}
         </div>
